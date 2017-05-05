@@ -1,11 +1,13 @@
 package com.example.csaper6.finalp;
 
+import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.security.KeyPair;
 
@@ -29,6 +31,12 @@ public class MainActivity extends AppCompatActivity {
         three = (EditText) findViewById(R.id.three);
         button = (Button) findViewById(R.id.button);
 
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        if(adapter != null){
+            Toast.makeText(MainActivity.this, "done", Toast.LENGTH_SHORT).show();
+        }
+
+
 
 
 
@@ -36,11 +44,16 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+
                 rsa hello = new rsa();
-                KeyPair one = hello.MakeKeys();
-                SealedObject message = hello.enCrypt(one, three.getText().toString());
-                String x = hello.decipher(message, one);
+                KeyPair key = hello.MakeKeys();
+                SealedObject message = hello.enCrypt(key, three.getText().toString());
+                String x = hello.decipher(message, key);
                 two.setText(x);
+                one.setText(key.getPublic().toString());
+
 
             }
         });
